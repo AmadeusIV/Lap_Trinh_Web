@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Chờ Sửa Chữa</title>
+    <link rel="stylesheet" href="../css/timKiem.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+
+<body class="edit-page">
+    <div class="container" id="listView">
+        <div class="header-actions">
+            <h1>Chỉnh Sửa Thông Tin (Chọn Người Cần Sửa)</h1>
+            <a href="/" class="btn-back">Quay Lại</a>
+        </div>
+
+        <div class="search-panel" style="margin-top: 20px;">
+            <form onsubmit="handleSearch(event)" class="search-form">
+                <div class="form-row">
+                    <div class="form-group" style="flex: 2;">
+                        <input type="text" id="keyword-input" placeholder="Tìm kiếm theo mã ID bác sĩ (VD: BS001)...">
+                    </div>
+                    <div class="form-group" style="justify-content: flex-end;">
+                        <button type="submit" class="btn-search">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="table-wrapper" style="margin-top: 20px;">
+            <table class="doctor-table" id="doctorTable">
+                <thead>
+                    <tr>
+                        <th class="col-stt">Mã BS</th>
+                        <th class="col-ten">Tên Bác Sĩ</th>
+                        <th class="col-khoa">Chuyên Khoa</th>
+                        <th style="width: 15%">Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="4" class="text-center">Đang tải danh sách...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="margin-top: 20px; text-align: center;">
+            <a href="/" class="btn-back">Quay Lại</a>
+        </div>
+    </div>
+
+    <div class="container" id="editFormView" style="display: none;">
+        <div class="header-actions">
+            <h1 id="pageTitle">Chỉnh Sửa Hồ Sơ</h1>
+            <button onclick="showList()" class="btn-back">Quay Lại Danh Sách</button>
+        </div>
+
+        <div class="search-panel">
+            <form id="adminEditForm" class="search-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Họ và Tên</label>
+                        <input type="text" id="hoTen" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Chuyên Khoa</label>
+                        <select id="chuyenKhoa" required>
+                            <option value="Đa khoa">Đa khoa</option>
+                            <option value="Sản phụ khoa">Sản phụ khoa</option>
+                            <option value="Nhi khoa">Nhi khoa</option>
+                            <option value="Mắt">Mắt</option>
+                            <option value="Nha khoa">Nha khoa</option>
+                            <option value="Da liễu">Da liễu</option>
+                            <option value="Tim mạch">Tim mạch</option>
+                            <option value="Nội tiết">Nội tiết</option>
+                            <option value="Điều dưỡng">Điều dưỡng</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Số Điện Thoại</label>
+                        <input type="text" id="soDienThoai" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tuổi</label>
+                        <input type="number" id="tuoi" required min="20" max="100">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Chọn Hình Ảnh (có trong thư mục)</label>
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            <select id="hinhAnh"
+                                style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 14px;">
+                            </select>
+                            <img id="hinhAnhPreview" src="" alt="Preview"
+                                style="width: 80px; height: 80px; border-radius: 8px; object-fit: cover; display: none; border: 1px solid #ddd;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Quận/Huyện</label>
+                        <input type="text" id="quan" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tỉnh/Thành Phố</label>
+                        <input type="text" id="thanhPho" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Ngày Làm Việc (Chọn các khối)</label>
+                        <div class="schedule-checkboxes" id="ngayLamViecContainer">
+                            <label><input type="checkbox" value="Thứ 2"> Thứ 2</label>
+                            <label><input type="checkbox" value="Thứ 3"> Thứ 3</label>
+                            <label><input type="checkbox" value="Thứ 4"> Thứ 4</label>
+                            <label><input type="checkbox" value="Thứ 5"> Thứ 5</label>
+                            <label><input type="checkbox" value="Thứ 6"> Thứ 6</label>
+                            <label><input type="checkbox" value="Thứ 7"> Thứ 7</label>
+                            <label><input type="checkbox" value="Chủ nhật"> Chủ nhật</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <button type="submit" class="btn-submit">Lưu Cập Nhật</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentEditId = null;
+        const listView = document.getElementById('listView');
+        const editFormView = document.getElementById('editFormView');
+        const adminEditForm = document.getElementById('adminEditForm');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAll();
+            loadImages();
+            adminEditForm.addEventListener('submit', handleFormUpdate);
+        });
+
+        function showList() {
+            listView.style.display = 'block';
+            editFormView.style.display = 'none';
+            loadAll();
+        }
+
+        async function loadImages() {
+            const select = document.getElementById('hinhAnh');
+            const preview = document.getElementById('hinhAnhPreview');
+            const res = await fetch('/api/images');
+            const files = await res.json();
+            select.innerHTML = '<option value="">-- Chọn hình ảnh --</option>';
+            files.forEach(file => {
+                const opt = document.createElement('option');
+                opt.value = file;
+                opt.textContent = file;
+                select.appendChild(opt);
+            });
+            select.addEventListener('change', () => {
+                if (select.value) {
+                    preview.src = '/images/' + select.value;
+                    preview.style.display = 'block';
+                } else {
+                    preview.style.display = 'none';
+                }
+            });
+        }
+
+        async function loadAll() {
+            const tbody = document.querySelector('#doctorTable tbody');
+            try {
+                const response = await fetch('/api/bacsi');
+                if (!response.ok) throw new Error("HTTP Error");
+
+                const data = await response.json();
+                const list = Array.isArray(data) ? data : (data.danhSach || []);
+
+                tbody.innerHTML = '';
+                if (list.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" class="text-center">Trống.</td></tr>';
+                    return;
+                }
+
+                list.forEach((bs) => {
+                    const id = bs.maBS || bs._id;
+                    const tr = `
+                        <tr>
+                            <td class="text-center"><b>${id}</b></td>
+                            <td class="col-ten">${bs.hoTen || 'Chưa rõ'}</td>
+                            <td class="col-khoa">${bs.chuyenKhoa || ''}</td>
+                            <td class="text-center">
+                                <button onclick="editDoctor('${id}')" class="btn-edit" style="cursor: pointer; border: none; padding: 8px 16px; border-radius: 4px; background-color: #4f46e5; color: white;">Sửa</button>
+                            </td>
+                        </tr>
+                    `;
+                    tbody.insertAdjacentHTML('beforeend', tr);
+                });
+            } catch (err) {
+                console.error(err);
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center text-error">Lỗi mất mạng.</td></tr>';
+            }
+        }
+
+        async function editDoctor(id) {
+            currentEditId = id;
+            try {
+                const res = await fetch(`/api/bacsi/${id}`);
+                if (!res.ok) throw new Error("Lấy dữ liệu thất bại");
+                const bs = await res.json();
+
+                document.getElementById('pageTitle').textContent = `Chỉnh Sửa Hồ Sơ: ${id}`;
+                document.getElementById('hoTen').value = bs.hoTen || '';
+                document.getElementById('chuyenKhoa').value = bs.chuyenKhoa || '';
+                document.getElementById('soDienThoai').value = bs.soDienThoai || '';
+                document.getElementById('tuoi').value = bs.tuoi || '';
+                document.getElementById('hinhAnh').value = bs.anhDaiDien || bs.hinhAnh || '';
+
+                const preview = document.getElementById('hinhAnhPreview');
+                if (document.getElementById('hinhAnh').value) {
+                    preview.src = '/images/' + document.getElementById('hinhAnh').value;
+                    preview.style.display = 'block';
+                }
+
+                if (bs.diaChi) {
+                    document.getElementById('quan').value = bs.diaChi.quan || '';
+                    document.getElementById('thanhPho').value = bs.diaChi.thanhPho || '';
+                }
+
+                const checkboxes = document.querySelectorAll('#ngayLamViecContainer input[type="checkbox"]');
+                checkboxes.forEach(box => box.checked = false);
+                if (bs.ngayLamViec && Array.isArray(bs.ngayLamViec)) {
+                    checkboxes.forEach(box => {
+                        if (bs.ngayLamViec.includes(box.value)) box.checked = true;
+                    });
+                }
+
+                listView.style.display = 'none';
+                editFormView.style.display = 'block';
+                window.scrollTo(0, 0);
+            } catch (err) {
+                alert(err.message);
+            }
+        }
+
+        async function handleFormUpdate(e) {
+            e.preventDefault();
+            const xacNhan = confirm("Bạn có chắc chắn muốn sửa đổi thông tin của hồ sơ này không?");
+            if (!xacNhan) return;
+
+            const selectedDays = Array.from(document.querySelectorAll('#ngayLamViecContainer input[type="checkbox"]:checked')).map(box => box.value);
+            const formData = {
+                hoTen: document.getElementById('hoTen').value,
+                chuyenKhoa: document.getElementById('chuyenKhoa').value,
+                soDienThoai: document.getElementById('soDienThoai').value,
+                tuoi: parseInt(document.getElementById('tuoi').value),
+                anhDaiDien: document.getElementById('hinhAnh').value,
+                diaChi: {
+                    quan: document.getElementById('quan').value,
+                    thanhPho: document.getElementById('thanhPho').value
+                },
+                ngayLamViec: selectedDays
+            };
+
+            try {
+                const response = await fetch(`/api/bacsi/${currentEditId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                const ketQua = await response.json();
+                if (response.ok) {
+                    alert(ketQua.message);
+                } else {
+                    alert(`Lỗi: ${ketQua.message}`);
+                }
+            } catch (err) {
+                alert("Lỗi kết nối máy chủ");
+            }
+        }
+
+        async function handleSearch(event) {
+            event.preventDefault();
+            const keyword = document.getElementById('keyword-input').value.trim();
+            const tbody = document.querySelector('#doctorTable tbody');
+
+            if (!keyword) {
+                loadAll();
+                return;
+            }
+
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center">Đang tải...</td></tr>';
+
+            try {
+                const res = await fetch('/api/bacsi');
+                if (!res.ok) throw new Error("HTTP Error");
+                let data = await res.json();
+                let list = Array.isArray(data) ? data : (data.danhSach || []);
+
+                let filtered = list.filter(bs => {
+                    let id = bs.maBS || bs._id || "";
+                    return id.toLowerCase().includes(keyword.toLowerCase());
+                });
+
+                tbody.innerHTML = '';
+
+                if (filtered.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" class="text-center text-error">No doctors found!</td></tr>';
+                    return;
+                }
+
+                filtered.forEach(bs => {
+                    const id = bs.maBS || bs._id;
+                    tbody.innerHTML += `
+                        <tr>
+                            <td class="text-center"><b>${id}</b></td>
+                            <td class="col-ten">${bs.hoTen || 'Chưa rõ'}</td>
+                            <td class="col-khoa">${bs.chuyenKhoa || ''}</td>
+                            <td class="text-center">
+                                <button onclick="editDoctor('${id}')" class="btn-edit" style="cursor: pointer; border: none; padding: 8px 16px; border-radius: 4px; background-color: #4f46e5; color: white;">Sửa</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (err) {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center text-error">Có lỗi xảy ra!</td></tr>';
+            }
+        }
+    </script>
+</body>
+
+</html>

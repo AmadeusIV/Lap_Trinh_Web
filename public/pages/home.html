@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Trang chủ giới thiệu hệ thống">
+    <title>Trang Chủ - Giới Thiệu</title>
+    <link rel="stylesheet" href="../css/home.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <header class="header">
+        <h2>Hệ thống Quản lý Bác Sĩ</h2>
+    </header>
+
+    <div class="main-wrapper">
+        <aside class="sidebar">
+            <div>
+                <nav class="menu">
+                    <a href="/doctors" class="menu-item">Danh Sách Bác Sĩ</a>
+                    <a href="/search-specialty?khoa=Điều dưỡng" class="menu-item">Bác Sĩ Điều Dưỡng</a>
+                    <a href="/search-age?min=45&max=50" class="menu-item">Bác Sĩ Độ Tuổi 45-50</a>
+                    <a href="/search-keyword" class="menu-item">Tìm Kiếm</a>
+
+                    <div class="menu-divider"></div>
+
+                    <div class="menu-dropdown">
+                        <a href="#" class="menu-item dropdown-toggle">Quản Trị Viên</a>
+                        <div class="dropdown-content" id="adminDropdown">
+                            <a href="/admin/add" class="menu-item">Thêm Bác Sĩ</a>
+                            <a href="/admin/edit" class="menu-item">Sửa Thông Tin</a>
+                            <a href="/admin/delete" class="menu-item">Xóa Bác Sĩ</a>
+                        </div>
+                    </div>
+
+                    <div class="menu-divider"></div>
+
+                    <a href="/about" class="menu-item">About</a>
+                </nav>
+            </div>
+        </aside>
+
+        <main class="content">
+            <div class="welcome-card">
+                <h1>Trang Chủ</h1>
+                <p>
+                    Đây là không gian giới thiệu tổng quan về hệ thống của chúng tôi.
+                    Nền tảng này được xây dựng nhằm mục đích tối ưu hóa quá trình quản lý thông tin, lưu trữ dữ liệu bác
+                    sĩ, và giúp người dùng thao tác một cách nhánh chóng và trực quan.
+                </p>
+                <p>
+                    Bạn có thể sử dụng thanh công cụ (Menu) nằm phía bên trái màn hình để điều hướng đến những chức năng
+                    chính yếu của hệ thống.
+                </p>
+            </div>
+        </main>
+    </div>
+
+    <footer class="footer">
+        &copy; 2026 Hệ thống Quản lý Phòng Khám.
+    </footer>
+
+</body>
+
+</html>

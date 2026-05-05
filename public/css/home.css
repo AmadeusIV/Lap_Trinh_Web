@@ -1,0 +1,201 @@
+:root {
+    --primary-color: #4f46e5;
+    --primary-hover: #4338ca;
+    --bg-color: #f3f4f6;
+    --sidebar-bg: #1f2937;
+    --sidebar-text: #f9fafb;
+    --header-bg: #ffffff;
+    --text-main: #111827;
+    --text-muted: #6b7280;
+    --border-color: #e5e7eb;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Header Styling - Full Width at Top */
+.header {
+    height: 70px;
+    width: 100%;
+    background-color: var(--header-bg);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    z-index: 5;
+    flex-shrink: 0;
+}
+
+.header h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+/* Middle Container */
+.main-wrapper {
+    display: flex;
+    flex-grow: 1;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Sidebar Styling - Left Side */
+.sidebar {
+    width: 260px;
+    height: 100%;
+    background-color: var(--sidebar-bg);
+    color: var(--sidebar-text);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+    z-index: 10;
+    flex-shrink: 0;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+}
+
+.menu-item {
+    padding: 16px 25px;
+    color: #9ca3af;
+    text-decoration: none;
+    font-size: 1.05rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.menu-item:hover {
+    background-color: rgba(255,255,255,0.05);
+    color: #ffffff;
+}
+
+.menu-item.active {
+    background-color: rgba(79, 70, 229, 0.15);
+    color: #ffffff;
+    border-left: 4px solid var(--primary-color);
+}
+
+.menu-bottom {
+    margin-top: auto;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 10px 0;
+}
+
+/* Content Area - Right Side */
+.content {
+    flex-grow: 1;
+    height: 100%;
+    padding: 50px 40px;
+    overflow-y: auto;
+    background-color: var(--bg-color);
+}
+
+.welcome-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 40px 50px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.welcome-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+}
+
+.welcome-card h1 {
+    font-size: 2.5rem;
+    color: var(--text-main);
+    margin-bottom: 24px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+
+.welcome-card p {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+/* Footer Styling - Full Width at Bottom */
+.footer {
+    height: 60px;
+    width: 100%;
+    background-color: var(--header-bg);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+/* Menu Divider */
+.menu-divider {
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.08);
+    margin: 8px 0;
+}
+
+/* Admin Dropdown Styles */
+.menu-dropdown {
+    position: relative;
+    cursor: pointer;
+}
+
+.dropdown-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 25px;
+}
+
+.dropdown-content {
+    display: none;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+}
+
+.menu-dropdown:hover .dropdown-content {
+    display: flex;
+}
+
+.dropdown-content .menu-item {
+    font-size: 0.92rem;
+    padding: 11px 20px 11px 36px;
+    border-left: 3px solid transparent;
+    color: #9ca3af;
+}
+
+.dropdown-content .menu-item:hover {
+    border-left: 3px solid var(--primary-color);
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.05);
+}

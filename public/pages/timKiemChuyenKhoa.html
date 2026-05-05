@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tìm Kiếm Theo Chuyên Khoa</title>
+    <link rel="stylesheet" href="../css/timKiem.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header-actions">
+            <h1>Bác Sĩ Thuộc Khoa Điều Dưỡng</h1>
+            <a href="/" class="btn-back">Quay Lại</a>
+        </div>
+
+        <div class="table-wrapper">
+            <table class="doctor-table" id="doctorTable">
+                <thead>
+                    <tr>
+                        <th class="col-stt">STT</th>
+                        <th class="col-ten">Tên Bác Sĩ</th>
+                        <th class="col-khoa">Chuyên Khoa</th>
+                        <th class="col-anh">Hình Ảnh</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+
+        <div style="margin-top: 20px; text-align: center;">
+            <a href="/" class="btn-back">Quay Lại</a>
+        </div>
+    </div>
+
+    <script>
+        let tbody;
+        let khoa;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            tbody = document.querySelector('#tableBody');
+
+            const params = new URLSearchParams(window.location.search);
+            khoa = params.get('khoa');
+
+            if (!khoa) {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center text-error">Vui lòng truy cập thông qua Menu hệ thống.</td></tr>';
+                return;
+            }
+
+            document.querySelector('h1').textContent = `Bác Sĩ Thuộc Khoa ${khoa}`;
+            loadData();
+        });
+
+        async function loadData() {
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center">Đang tải dữ liệu...</td></tr>';
+
+            const url = '/api/bacsi/chuyenkhoa/' + encodeURIComponent(khoa);
+            const response = await fetch(url);
+            const data = await response.json();
+            const list = data.danhSach || data;
+
+            tbody.innerHTML = list.map((bs, index) => {
+                let hinhAnh = bs.anhDaiDien || bs.hinhAnh || 'https://via.placeholder.com/65x65.png?text=No+Image';
+                if (!hinhAnh.startsWith('http') && !hinhAnh.startsWith('/')) hinhAnh = '/images/' + hinhAnh;
+
+                return `
+                    <tr>
+                        <td class="col-stt text-center">${index + 1}</td>
+                        <td class="col-ten">
+                            <a class="doctor-name-link" href="/doctors-detail?id=${bs.maBS || bs._id}">${bs.hoTen || 'Chưa cập nhật'}</a>
+                        </td>
+                        <td class="col-khoa">${bs.chuyenKhoa || 'Chưa cập nhật'}</td>
+                        <td class="col-anh"><img src="${hinhAnh}" class="doc-image" alt="Ảnh"></td>
+                    </tr>`;
+            }).join('') || '<tr><td colspan="4" class="text-center">Không tìm thấy bác sĩ nào.</td></tr>';
+        }
+    </script>
+</body>
+
+</html>

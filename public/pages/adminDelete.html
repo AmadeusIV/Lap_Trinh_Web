@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xóa Dữ Liệu</title>
+    <link rel="stylesheet" href="../css/timKiem.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header-actions">
+            <h1 style="color: #ef4444;">XÓA BỎ BÁC SĨ KHỎI HỆ THỐNG</h1>
+            <a href="/" class="btn-back">Quay Lại</a>
+        </div>
+
+        <div class="search-panel" style="margin-top: 20px;">
+            <form onsubmit="handleSearch(event)" class="search-form">
+                <div class="form-row">
+                    <div class="form-group" style="flex: 2;">
+                        <input type="text" id="keyword-input" placeholder="Nhập ID bác sĩ để tìm (VD: BS001)...">
+                    </div>
+                    <div class="form-group" style="justify-content: flex-end;">
+                        <button type="submit" class="btn-search">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="table-wrapper" style="margin-top: 20px;">
+            <table class="doctor-table" id="doctorTable">
+                <thead>
+                    <tr>
+                        <th class="col-stt">Mã BS</th>
+                        <th class="col-ten">Tên Bác Sĩ</th>
+                        <th class="col-khoa">Tuổi</th>
+                        <th style="width: 15%">CẢNH BÁO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="4" class="text-center">Đang tải danh sách...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="margin-top: 20px; text-align: center;">
+            <a href="/" class="btn-back">Quay Lại</a>
+        </div>
+    </div>
+
+    <script>
+        let tbody;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            tbody = document.querySelector('#doctorTable tbody');
+            fetchList();
+        });
+
+        async function fetchList() {
+            try {
+                const response = await fetch('/api/bacsi');
+                if (!response.ok) throw new Error("HTTP Error");
+
+                const data = await response.json();
+                const list = Array.isArray(data) ? data : (data.danhSach || []);
+
+                tbody.innerHTML = '';
+                if (list.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" class="text-center">Hệ thống đang trống.</td></tr>';
+                    return;
+                }
+
+                list.forEach((bs) => {
+                    const id = bs.maBS || bs._id;
+                    const row = document.createElement('tr');
+                    row.id = `row-${id}`;
+                    row.innerHTML = `
+                        <td class="text-center"><b>${id}</b></td>
+                        <td class="col-ten"><a href="/doctors-detail?id=${id}" style="color: inherit; text-decoration: none;">${bs.hoTen || 'Chưa rõ'}</a></td>
+                        <td class="col-khoa">${bs.tuoi || '?'} Tuổi</td>
+                        <td class="text-center">
+                            <button class="btn-delete" onclick="xoaBacSi('${id}', '${bs.hoTen}')">XÓA NGAY</button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            } catch (err) {
+                console.error(err);
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center text-error">Lỗi mất mạng.</td></tr>';
+            }
+        }
+
+        async function xoaBacSi(id, ten) {
+            const xacNhan = confirm(`!! HÀNH ĐỘNG NGUY HIỂM !!\nBạn có chắc chắn muốn xóa bác sĩ ${ten} (Mã: ${id})?\nDữ liệu sẽ mất vĩnh viễn và không thể khôi phục!`);
+            if (!xacNhan) return;
+
+            const row = document.getElementById(`row-${id}`);
+            if (!row) { fetchList(); return; }
+            row.classList.add('row-fade');
+
+            try {
+                const res = await fetch(`/api/bacsi/${id}`, { method: 'DELETE' });
+                const ketQua = await res.json();
+
+                if (res.ok) {
+                    row.remove();
+                    alert(ketQua.message);
+                } else {
+                    row.classList.remove('row-fade');
+                    alert(ketQua.message);
+                }
+            } catch (err) {
+                console.error(err);
+                row.classList.remove('row-fade');
+                alert('Lỗi mất mạng khi thực hiện lệnh xóa.');
+            }
+        }
+
+        async function handleSearch(event) {
+            event.preventDefault();
+            const keyword = document.getElementById('keyword-input').value.trim();
+
+            if (!keyword) {
+                fetchList();
+                return;
+            }
+
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center">Đang tải...</td></tr>';
+
+            try {
+                const res = await fetch('/api/bacsi');
+                if (!res.ok) throw new Error("HTTP Error");
+                let data = await res.json();
+                let list = Array.isArray(data) ? data : (data.danhSach || []);
+
+                let filtered = list.filter(bs => {
+                    let id = bs.maBS || bs._id || "";
+                    return id.toLowerCase().includes(keyword.toLowerCase());
+                });
+
+                tbody.innerHTML = '';
+
+                if (filtered.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" class="text-center text-error">No doctors found!</td></tr>';
+                    return;
+                }
+
+                filtered.forEach(bs => {
+                    const id = bs.maBS || bs._id;
+                    tbody.innerHTML += `
+                        <tr id="row-${id}">
+                            <td class="text-center"><b>${id}</b></td>
+                            <td class="col-ten"><a href="/doctors-detail?id=${id}" style="color: inherit; text-decoration: none;">${bs.hoTen || 'Chưa rõ'}</a></td>
+                            <td class="col-khoa">${bs.tuoi || '?'} Tuổi</td>
+                            <td class="text-center">
+                                <button class="btn-delete" onclick="xoaBacSi('${id}', '${bs.hoTen}')">XÓA NGAY</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (err) {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center text-error">Có lỗi xảy ra!</td></tr>';
+            }
+        }
+    </script>
+</body>
+
+</html>

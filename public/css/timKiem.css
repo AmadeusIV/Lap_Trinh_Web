@@ -1,0 +1,187 @@
+/* Tái sử dụng font chữ Google Inter chung của project */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #f8fafc;
+    color: #334155;
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* Header actions giống ở danh sách */
+.header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.header-actions h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+}
+
+.btn-back {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #cbd5e1;
+    color: #334155;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.btn-back:hover {
+    background-color: #94a3b8;
+}
+
+/* ------------------- FORM TÌM KIẾM ------------------- */
+.search-panel {
+    background-color: #ffffff;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    margin-bottom: 30px;
+}
+
+.search-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #475569;
+}
+
+.form-group input, 
+.form-group select {
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.age-group {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.age-group span {
+    font-weight: 600;
+    color: #64748b;
+}
+
+.btn-search {
+    align-self: flex-end;
+    padding: 10px 24px;
+    background-color: #2563eb;
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-search:hover {
+    background-color: #1d4ed8;
+}
+
+/* ------------------- BẢNG DANH SÁCH ------------------- */
+.table-wrapper {
+    background-color: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.doctor-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.doctor-table th {
+    background-color: #f8fafc;
+    color: #64748b;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    padding: 16px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.doctor-table td {
+    padding: 16px;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+}
+
+.doctor-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.doctor-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.col-stt { width: 50px; text-align: center; }
+.col-ten { width: 35%; font-weight: 600; }
+.col-khoa { width: 30%; }
+.col-anh { width: 100px; }
+
+.doctor-name-link {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.doctor-name-link:hover {
+    text-decoration: underline;
+}
+
+.doc-image {
+    width: 65px;
+    height: 65px;
+    border-radius: 8px;
+    object-fit: cover;
+    display: block;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.text-center { text-align: center; }
+.text-error { color: #ef4444; }

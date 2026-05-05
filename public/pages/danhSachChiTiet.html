@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Bác Sĩ</title>
+    <link rel="stylesheet" href="../css/chiTiet.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div class="detail-header">
+            <h2>Hồ Sơ Bác Sĩ</h2>
+            <a href="javascript:history.back()" class="btn-back">Quay Lại Danh Sách</a>
+        </div>
+
+        <div id="contentArea">
+            <div id="loadingView" class="text-center" style="padding: 40px;">
+                Đang tải thông tin...
+            </div>
+
+            <div id="errorView" class="error-view" style="display: none;">
+                <h2 id="errorTitle">Lỗi</h2>
+                <p id="errorMessage"></p>
+            </div>
+
+            <div id="profileBody" class="profile-body" style="display: none;">
+                <div class="profile-overview">
+                    <img id="doctorAvatar" src="https://via.placeholder.com/150x150.png?text=No+Photo" alt="Avatar"
+                        class="profile-avatar">
+                    <div class="profile-title">
+                        <h1 id="doctorName">Chưa cập nhật tên</h1>
+                        <div class="specialty">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                                </path>
+                            </svg>
+                            <span id="doctorSpecialty">Chưa phân khoa</span>
+                        </div>
+                        <span class="badge" id="doctorCode">Mã NV: </span>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>Thông Tin Cá Nhân & Liên Hệ</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Độ tuổi</span>
+                            <span class="info-value" id="doctorAge">Chưa rõ</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Số điện thoại</span>
+                            <span class="info-value" id="doctorPhone">Chưa cập nhật</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Địa chỉ công tác</span>
+                            <span class="info-value" id="doctorAddress">Chưa cập nhật</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Ngày làm việc</span>
+                            <div class="schedule-list" id="doctorSchedule">
+                                <span class="text-muted">Chưa cập nhật</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadChiTietBacSi();
+        });
+
+        async function loadChiTietBacSi() {
+            const loadingView = document.getElementById('loadingView');
+            const errorView = document.getElementById('errorView');
+            const profileBody = document.getElementById('profileBody');
+            const errorTitle = document.getElementById('errorTitle');
+            const errorMessage = document.getElementById('errorMessage');
+
+            function showError(title, message) {
+                loadingView.style.display = 'none';
+                profileBody.style.display = 'none';
+                errorView.style.display = 'block';
+                errorTitle.textContent = title;
+                errorMessage.textContent = message;
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+
+            if (!id) {
+                showError('Lỗi truy cập', 'Không tìm thấy mã số bác sĩ. Vui lòng quay lại danh sách.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/bacsi/${id}`);
+
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        throw new Error("Không có hồ sơ nhân sự trùng khớp.");
+                    }
+                    throw new Error(`Lỗi hệ thống: ${response.status}`);
+                }
+
+                const bacSi = await response.json();
+
+                let srcAnh = bacSi.anhDaiDien || bacSi.hinhAnh;
+                if (!srcAnh || srcAnh.trim() === '') {
+                    srcAnh = 'https://via.placeholder.com/150x150.png?text=No+Photo';
+                } else if (!srcAnh.startsWith('http') && !srcAnh.startsWith('/')) {
+                    srcAnh = '/images/' + srcAnh;
+                }
+
+                let diaChiStr = 'Chưa cập nhật';
+                if (bacSi.diaChi) {
+                    diaChiStr = `${bacSi.diaChi.quan || ''}, ${bacSi.diaChi.thanhPho || ''}`.replace(/^, | , $/g, '').trim();
+                }
+
+                let lichLamViecHtml = '<span class="text-muted">Chưa cập nhật</span>';
+                if (Array.isArray(bacSi.ngayLamViec) && bacSi.ngayLamViec.length > 0) {
+                    lichLamViecHtml = bacSi.ngayLamViec.map(day => `<span class="schedule-tag">${day}</span>`).join('');
+                }
+
+                document.getElementById('doctorAvatar').src = srcAnh;
+                document.getElementById('doctorName').textContent = bacSi.hoTen || 'Chưa cập nhật tên';
+                document.getElementById('doctorSpecialty').textContent = bacSi.chuyenKhoa || 'Chưa phân khoa';
+                document.getElementById('doctorCode').textContent = `Mã NV: ${bacSi.maBS || bacSi._id}`;
+
+                document.getElementById('doctorAge').textContent = bacSi.tuoi ? bacSi.tuoi + ' Tuổi' : 'Chưa rõ';
+                document.getElementById('doctorPhone').textContent = bacSi.soDienThoai || 'Chưa cập nhật';
+                document.getElementById('doctorAddress').textContent = diaChiStr;
+                document.getElementById('doctorSchedule').innerHTML = lichLamViecHtml;
+
+                loadingView.style.display = 'none';
+                profileBody.style.display = 'flex';
+
+            } catch (err) {
+                console.error(err);
+                showError('Không thể tải thông tin', err.message);
+            }
+        }
+    </script>
+</body>
+
+</html>

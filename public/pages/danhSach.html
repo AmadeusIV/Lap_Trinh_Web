@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Bác Sĩ</title>
+    <link rel="stylesheet" href="../css/danhSach.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header-actions">
+            <h1>Danh Sách Bác Sĩ</h1>
+            <a href="/" class="btn-back">Quay Lại</a>
+        </div>
+
+        <div class="table-wrapper">
+            <table class="doctor-table" id="doctorTable">
+                <thead>
+                    <tr>
+                        <th class="col-stt">STT</th>
+                        <th class="col-ten">Tên Bác Sĩ</th>
+                        <th class="col-khoa">Chuyên Khoa</th>
+                        <th class="col-anh">Hình Ảnh</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="4" class="text-center">Đang tải dữ liệu...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="margin-top: 20px; text-align: center;">
+            <a href="/" class="btn-back">Quay Lại</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDanhSach();
+        });
+
+        async function loadDanhSach() {
+            const tbody = document.querySelector('#doctorTable tbody');
+
+            try {
+                const response = await fetch('/api/bacsi');
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+                const data = await response.json();
+                const list = Array.isArray(data) ? data : (data.danhSach || []);
+
+                tbody.innerHTML = list.map((bs, index) => {
+                    let srcAnh = bs.anhDaiDien || bs.hinhAnh || 'https://via.placeholder.com/65x65.png?text=No+Image';
+                    if (!srcAnh.startsWith('http') && !srcAnh.startsWith('/')) {
+                        srcAnh = '/images/' + srcAnh;
+                    }
+
+                    return `
+                    <tr>
+                        <td class="col-stt text-center">${index + 1}</td>
+                        <td class="col-ten">
+                            <a href="/doctors-detail?id=${bs.maBS || bs._id}" class="doctor-name-link">${bs.hoTen || 'Chưa cập nhật'}</a>
+                        </td>
+                        <td class="col-khoa">${bs.chuyenKhoa || 'Chưa cập nhật'}</td>
+                        <td class="col-anh">
+                            <img src="${srcAnh}" alt="Ảnh bác sĩ" class="doc-image">
+                        </td>
+                    </tr>`;
+                }).join('') || '<tr><td colspan="4" class="text-center">Chưa có dữ liệu bác sĩ nào.</td></tr>';
+                
+            } catch (err) {
+                console.error('Lỗi khi tải dữ liệu từ API: ', err);
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center text-error">Hiện tại không kết nối được tới máy chủ dữ liệu.</td></tr>';
+            }
+        }
+    </script>
+</body>
+
+</html>

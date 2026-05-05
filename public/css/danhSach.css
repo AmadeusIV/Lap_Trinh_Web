@@ -1,0 +1,132 @@
+:root {
+    --primary-color: #4f46e5;
+    --primary-hover: #4338ca;
+    --bg-color: #f3f4f6;
+    --text-main: #111827;
+    --text-muted: #6b7280;
+    --border-color: #e5e7eb;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    padding: 40px 20px;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.025);
+}
+
+.header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.header-actions h1 {
+    font-size: 2rem;
+    color: var(--text-main);
+    font-weight: 700;
+}
+
+.btn-back {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #e5e7eb;
+    color: var(--text-main);
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-back:hover {
+    background-color: #d1d5db;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.doctor-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.doctor-table th, 
+.doctor-table td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+}
+
+.doctor-table th {
+    background-color: #f9fafb;
+    font-weight: 600;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    position: sticky;
+    top: 0;
+}
+
+.doctor-table tr {
+    transition: background-color 0.2s ease;
+}
+
+.doctor-table tr:hover td {
+    background-color: rgba(79, 70, 229, 0.03);
+}
+
+.doctor-table a.doctor-name-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.05rem;
+}
+
+.doctor-table a.doctor-name-link:hover {
+    text-decoration: underline;
+}
+
+.doc-image {
+    width: 65px;
+    height: 65px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.text-error {
+    color: #ef4444;
+}
+
+/* Custom column widths */
+.col-stt { width: 10%; }
+.col-ten { width: 40%; }
+.col-khoa { width: 30%; }
+.col-anh { width: 20%; }

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tìm Kiếm</title>
+    <link rel="stylesheet" href="../css/timKiem.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header-actions">
+            <h1>Tìm Kiếm Bác Sĩ</h1>
+            <a href="/" class="btn-back">Quay Lại</a>
+        </div>
+
+        <div class="search-panel">
+            <form id="searchForm" class="search-form">
+                <div class="form-row">
+                    <div class="form-group" style="flex: 2;">
+                        <label for="tuKhoa">Từ khóa (Chuyên môn, Địa chỉ, Lịch làm việc)</label>
+                        <input type="text" id="tuKhoa" name="tuKhoa" placeholder="Hà Nội, Mắt, Nha khoa...">
+                    </div>
+                    <div class="form-group" style="justify-content: flex-end;">
+                        <button type="submit" class="btn-search">Tìm Kiếm</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="table-wrapper">
+            <table class="doctor-table" id="doctorTable">
+                <thead>
+                    <tr>
+                        <th class="col-stt">STT</th>
+                        <th class="col-ten">Tên Bác Sĩ</th>
+                        <th class="col-khoa">Chuyên Khoa</th>
+                        <th class="col-anh">Hình Ảnh</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+
+        <div style="margin-top: 20px; text-align: center;">
+            <a href="/" class="btn-back">Quay Lại</a>
+        </div>
+    </div>
+
+    <script>
+        let form;
+        let tbody;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            form = document.getElementById('searchForm');
+            tbody = document.querySelector('#tableBody');
+
+            loadData();
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                loadData();
+            });
+        });
+
+        async function loadData() {
+                const tuKhoa = document.getElementById('tuKhoa').value;
+                const params = new URLSearchParams();
+                if (tuKhoa) params.append('keyword', tuKhoa);
+
+                const response = await fetch(`/api/bacsi/search?${params.toString()}`);
+                const data = await response.json();
+                const list = data.danhSach || data;
+
+                tbody.innerHTML = list.map((bs, index) => {
+                    let hinhAnh = bs.anhDaiDien || bs.hinhAnh || 'https://via.placeholder.com/65x65.png?text=No+Image';
+                    if (!hinhAnh.startsWith('http') && !hinhAnh.startsWith('/')) hinhAnh = '/images/' + hinhAnh;
+
+                    return `
+                    <tr>
+                        <td class="col-stt text-center">${index + 1}</td>
+                        <td class="col-ten">
+                            <a class="doctor-name-link" href="/doctors-detail?id=${bs.maBS || bs._id}">${bs.hoTen || 'Chưa cập nhật'}</a>
+                        </td>
+                        <td class="col-khoa">${bs.chuyenKhoa || 'Chưa cập nhật'}</td>
+                        <td class="col-anh"><img src="${hinhAnh}" class="doc-image" alt="Ảnh"></td>
+                    </tr>`;
+                }).join('') || '<tr><td colspan="4" class="text-center">Không tìm thấy bác sĩ nào.</td></tr>';
+        }
+    </script>
+</body>
+
+</html>

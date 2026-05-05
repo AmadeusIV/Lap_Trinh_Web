@@ -1,0 +1,101 @@
+/* Admin Section specific styles */
+
+/* adminAdd.html Grid Forms */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.btn-submit {
+    background-color: #10b981;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 15px;
+    transition: 0.3s;
+}
+
+.btn-submit:hover {
+    background-color: #059669;
+}
+
+/* adminEdit.html Buttons */
+.btn-edit {
+    background-color: #4f46e5;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.btn-edit:hover {
+    background-color: #3730a3;
+}
+
+/* adminDelete.html Buttons & Utility */
+.btn-delete {
+    background-color: #ef4444;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-delete:hover {
+    background-color: #b91c1c;
+}
+
+.row-fade {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+/* Schedule Checkboxes (Ngày Làm Việc) */
+.schedule-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.schedule-checkboxes label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    background: #f9fafb;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.schedule-checkboxes label:hover {
+    background: #f3f4f6;
+    border-color: #9ca3af;
+}
+
+.schedule-checkboxes input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
